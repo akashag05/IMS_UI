@@ -5,18 +5,21 @@ import {
   type MRT_ColumnDef,
   MRT_Row,
 } from "material-react-table";
+import { makeStyles } from "@mui/styles";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import { useAppContext } from "@/context/AppContext";
 import { useWebSocketContext } from "@/context/WebSocketContext";
 import { GetWidgetsData } from "@/app/api/DashboardWidgetsAPI";
-
+import { colors, createTheme, ThemeProvider, useTheme } from "@mui/material";
 const DashboardGridWidget = (props: any) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [data, setData] = useState<any>();
   const [columns, setColumns] = useState<any>();
   const [id, setId] = useState<any>("");
   const [title, setTitle] = useState<any>("");
-  const { getTableApiState, togglegetTableApiState } = useAppContext();
+  const { getTableApiState, togglegetTableApiState, themeSwitch } =
+    useAppContext();
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
   const eventType = "ws.visualization";
   const { Subscribe, emit, unsubscribe, connection } = useWebSocketContext();
@@ -59,9 +62,9 @@ const DashboardGridWidget = (props: any) => {
     const totalGroupsKeys: any = {};
     let cols: any = [];
     cols.push({
-      accessorKey: "device",
-      header: "Device",
-      size: 150,
+      field: "device",
+      headerName: "Device",
+      // size: 150,
     });
     if (groupBy != "device") {
       initialData.forEach((item: any) => {
@@ -70,9 +73,9 @@ const DashboardGridWidget = (props: any) => {
         }
       });
       cols.push({
-        accessorKey: groupBy,
-        header: groupBy,
-        size: 150,
+        field: groupBy,
+        headerName: groupBy,
+        // size: 150,
       });
     }
     const firstData = initialData[0]?.event || 0;
@@ -80,9 +83,9 @@ const DashboardGridWidget = (props: any) => {
     allKeys.filter((keys: any) => {
       if (keys != "device" && keys != groupBy) {
         cols.push({
-          accessorKey: keys.replace(/\./g, "_"),
-          header: keys.replace(/\./g, " "),
-          size: 150,
+          field: keys.replace(/\./g, "_"),
+          headerName: keys.replace(/\./g, " "),
+          width: 150,
         });
       }
     });
@@ -135,24 +138,36 @@ const DashboardGridWidget = (props: any) => {
     const csv = generateCsv(csvConfig)(rowData);
     download(csvConfig)(csv);
   };
-  const tableStyle = {
-    backgroundColor: "boxdark", // Set your desired background color for the entire table
-  };
-  const baseBackgroundColor = "lightblue";
+  const useStyles = makeStyles((theme: any) => ({
+    paginationText: {
+      color: themeSwitch ? "white" : "black",
+    },
+  }));
+  const classes = useStyles();
   // console.log("DATA JHADU","keys",props.keys, columns, data);
   return (
     <>
       {data && (
         <div className="">
           <h6 className="my-2">{title}</h6>
-          <div className="">
-            <MaterialReactTable
-              columns={columns}
-              data={data}
-              getRowId={(row: any) => row.id}
-              // style={{ backgroundColor: baseBackgroundColor }}
-            />
-          </div>
+          {/* <MaterialReactTable
+            columns={columns}
+            data={data}
+            getRowId={(row: any) => row.id}
+          /> */}
+          <DataGrid
+            rows={data}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            className={classes.paginationText}
+            style={{ color: themeSwitch ? "white" : "" }}
+            pageSizeOptions={[5, 10]}
+            // checkboxSelection
+          />
         </div>
       )}
       {/* <DeviceDetilsModal

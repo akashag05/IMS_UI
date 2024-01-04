@@ -4,11 +4,13 @@ import { usePathname } from "next/navigation";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Image from "next/image";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import DataSaverOffIcon from "@mui/icons-material/DataSaverOff";
 import Person2Icon from "@mui/icons-material/Person2";
 import DynamicFormIcon from "@mui/icons-material/DynamicForm";
 import SettingsIcon from "@mui/icons-material/Settings";
-import MenuIcon from "@mui/icons-material/Menu";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { useAppContext } from "@/context/AppContext";
 // interface SidebarProps {
 //   sidebarOpen: boolean;
@@ -124,7 +126,7 @@ const Sidebar = () => {
                   return (
                     <React.Fragment>
                       <Link
-                        href="#"
+                        href="/dashboard"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                           (pathname === "/" ||
                             pathname.includes("dashboard")) &&
@@ -196,7 +198,7 @@ const Sidebar = () => {
                     "bg-graydark dark:bg-meta-4"
                   }`}
                 >
-                  <CalendarMonthIcon />
+                  <EqualizerIcon />
                   {sidebarOpen && <>Metric Explorer</>}
                 </Link>
               </li>
@@ -210,7 +212,7 @@ const Sidebar = () => {
                     pathname.includes("profile") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
-                  <Person2Icon />
+                  <DataSaverOffIcon />
                   {sidebarOpen && <>Flow Explorer</>}
                 </Link>
               </li>
@@ -239,7 +241,7 @@ const Sidebar = () => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <DynamicFormIcon />
+                        <NotificationsActiveIcon />
                         {sidebarOpen && (
                           <>
                             Alerting
@@ -308,584 +310,23 @@ const Sidebar = () => {
                     pathname.includes("profile") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
-                  <Person2Icon />
+                  <AssignmentIcon />
                   {sidebarOpen && <>Audit</>}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/settings"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("settings") &&
+                    "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <SettingsIcon />
+                  {sidebarOpen && <>Settings</>}
+                </Link>
+              </li>
               {/* <!-- Menu Item Audit --> */}
-
-              {/* <!-- Menu Item Forms --> */}
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === "/forms" || pathname.includes("forms")
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <Link
-                        href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/forms" ||
-                            pathname.includes("forms")) &&
-                          "bg-graydark dark:bg-meta-4"
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <DynamicFormIcon />
-                        {sidebarOpen && (
-                          <>
-                            Settings
-                            <svg
-                              className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                                open && "rotate-180"
-                              }`}
-                              width="20"
-                              height="20"
-                              viewBox="0 0 20 20"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                fill=""
-                              />
-                            </svg>
-                          </>
-                        )}
-                      </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${
-                          !open && "hidden"
-                        }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <SidebarLinkGroup
-                              activeCondition={
-                                pathname === "/forms" ||
-                                pathname.includes("forms")
-                              }
-                            >
-                              {(handleClick, open) => {
-                                return (
-                                  <React.Fragment>
-                                    <Link
-                                      href="#"
-                                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        (pathname === "/forms" ||
-                                          pathname.includes("forms")) &&
-                                        "bg-graydark dark:bg-meta-4"
-                                      }`}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        sidebarExpanded
-                                          ? handleClick()
-                                          : setSidebarExpanded(true);
-                                      }}
-                                    >
-                                      <DynamicFormIcon />
-                                      {sidebarOpen && (
-                                        <>
-                                          User Management
-                                          <svg
-                                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                                              open && "rotate-180"
-                                            }`}
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              fillRule="evenodd"
-                                              clipRule="evenodd"
-                                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                              fill=""
-                                            />
-                                          </svg>
-                                        </>
-                                      )}
-                                    </Link>
-                                    {/* <!-- Dropdown Menu Start --> */}
-                                    <div
-                                      className={`translate transform overflow-hidden ${
-                                        !open && "hidden"
-                                      }`}
-                                    >
-                                      <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                        <li>
-                                          <Link
-                                            href="#"
-                                            className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname === "#" && "text-white"
-                                            }`}
-                                          >
-                                            User Management
-                                          </Link>
-                                        </li>
-                                        <li>
-                                          <Link
-                                            href="/forms/form-layout"
-                                            className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname ===
-                                                "/forms/form-layout" &&
-                                              "text-white"
-                                            }`}
-                                          >
-                                            Role Management
-                                          </Link>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    {/* <!-- Dropdown Menu End --> */}
-                                  </React.Fragment>
-                                );
-                              }}
-                            </SidebarLinkGroup>
-                          </li>
-                          <li>
-                            <SidebarLinkGroup
-                              activeCondition={
-                                pathname === "/forms" ||
-                                pathname.includes("forms")
-                              }
-                            >
-                              {(handleClick, open) => {
-                                return (
-                                  <React.Fragment>
-                                    <Link
-                                      href="#"
-                                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        (pathname === "/forms" ||
-                                          pathname.includes("forms")) &&
-                                        "bg-graydark dark:bg-meta-4"
-                                      }`}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        sidebarExpanded
-                                          ? handleClick()
-                                          : setSidebarExpanded(true);
-                                      }}
-                                    >
-                                      <DynamicFormIcon />
-                                      {sidebarOpen && (
-                                        <>
-                                          System Settings
-                                          <svg
-                                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                                              open && "rotate-180"
-                                            }`}
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              fillRule="evenodd"
-                                              clipRule="evenodd"
-                                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                              fill=""
-                                            />
-                                          </svg>
-                                        </>
-                                      )}
-                                    </Link>
-                                    {/* <!-- Dropdown Menu Start --> */}
-                                    <div
-                                      className={`translate transform overflow-hidden ${
-                                        !open && "hidden"
-                                      }`}
-                                    >
-                                      <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                        <li>
-                                          <Link
-                                            href="#"
-                                            className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname === "#" && "text-white"
-                                            }`}
-                                          >
-                                            SMTP Configuration
-                                          </Link>
-                                        </li>
-                                        <li>
-                                          <Link
-                                            href="/forms/form-layout"
-                                            className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname ===
-                                                "/forms/form-layout" &&
-                                              "text-white"
-                                            }`}
-                                          >
-                                            Global Settings
-                                          </Link>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    {/* <!-- Dropdown Menu End --> */}
-                                  </React.Fragment>
-                                );
-                              }}
-                            </SidebarLinkGroup>
-                          </li>
-                          <li>
-                            <SidebarLinkGroup
-                              activeCondition={
-                                pathname === "/forms" ||
-                                pathname.includes("forms")
-                              }
-                            >
-                              {(handleClick, open) => {
-                                return (
-                                  <React.Fragment>
-                                    <Link
-                                      href="#"
-                                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        (pathname === "/forms" ||
-                                          pathname.includes("forms")) &&
-                                        "bg-graydark dark:bg-meta-4"
-                                      }`}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        sidebarExpanded
-                                          ? handleClick()
-                                          : setSidebarExpanded(true);
-                                      }}
-                                    >
-                                      <DynamicFormIcon />
-                                      {sidebarOpen && (
-                                        <>
-                                          Discovery Settings
-                                          <svg
-                                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                                              open && "rotate-180"
-                                            }`}
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              fillRule="evenodd"
-                                              clipRule="evenodd"
-                                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                              fill=""
-                                            />
-                                          </svg>
-                                        </>
-                                      )}
-                                    </Link>
-                                    {/* <!-- Dropdown Menu Start --> */}
-                                    <div
-                                      className={`translate transform overflow-hidden ${
-                                        !open && "hidden"
-                                      }`}
-                                    >
-                                      <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                        <li>
-                                          <Link
-                                            href="#"
-                                            className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname === "#" && "text-white"
-                                            }`}
-                                          >
-                                            Discovery Schedulers
-                                          </Link>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    {/* <!-- Dropdown Menu End --> */}
-                                  </React.Fragment>
-                                );
-                              }}
-                            </SidebarLinkGroup>
-                          </li>
-                          <li>
-                            <SidebarLinkGroup
-                              activeCondition={
-                                pathname === "/forms" ||
-                                pathname.includes("forms")
-                              }
-                            >
-                              {(handleClick, open) => {
-                                return (
-                                  <React.Fragment>
-                                    <Link
-                                      href="#"
-                                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        (pathname === "/forms" ||
-                                          pathname.includes("forms")) &&
-                                        "bg-graydark dark:bg-meta-4"
-                                      }`}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        sidebarExpanded
-                                          ? handleClick()
-                                          : setSidebarExpanded(true);
-                                      }}
-                                    >
-                                      <DynamicFormIcon />
-                                      {sidebarOpen && (
-                                        <>
-                                          Device Settings
-                                          <svg
-                                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                                              open && "rotate-180"
-                                            }`}
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              fillRule="evenodd"
-                                              clipRule="evenodd"
-                                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                              fill=""
-                                            />
-                                          </svg>
-                                        </>
-                                      )}
-                                    </Link>
-                                    {/* <!-- Dropdown Menu Start --> */}
-                                    <div
-                                      className={`translate transform overflow-hidden ${
-                                        !open && "hidden"
-                                      }`}
-                                    >
-                                      <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                        <li>
-                                          <Link
-                                            href="#"
-                                            className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname === "#" && "text-white"
-                                            }`}
-                                          >
-                                            Credential Profile
-                                          </Link>
-                                        </li>
-                                        <li>
-                                          <Link
-                                            href="#"
-                                            className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname === "#" && "text-white"
-                                            }`}
-                                          >
-                                            Oboarding
-                                          </Link>
-                                        </li>
-                                        <li>
-                                          <Link
-                                            href="#"
-                                            className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                              pathname === "#" && "text-white"
-                                            }`}
-                                          >
-                                            Groups
-                                          </Link>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    {/* <!-- Dropdown Menu End --> */}
-                                  </React.Fragment>
-                                );
-                              }}
-                            </SidebarLinkGroup>
-                          </li>
-                          <li>
-                            <SidebarLinkGroup
-                              activeCondition={
-                                pathname === "/forms" ||
-                                pathname.includes("forms")
-                              }
-                            >
-                              {(handleClick, open) => {
-                                return (
-                                  <React.Fragment>
-                                    <Link
-                                      href="#"
-                                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        (pathname === "/forms" ||
-                                          pathname.includes("forms")) &&
-                                        "bg-graydark dark:bg-meta-4"
-                                      }`}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        sidebarExpanded
-                                          ? handleClick()
-                                          : setSidebarExpanded(true);
-                                      }}
-                                    >
-                                      <DynamicFormIcon />
-                                      {sidebarOpen && (
-                                        <>
-                                          Monitoring Settings
-                                          <svg
-                                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                                              open && "rotate-180"
-                                            }`}
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 20 20"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              fillRule="evenodd"
-                                              clipRule="evenodd"
-                                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                              fill=""
-                                            />
-                                          </svg>
-                                        </>
-                                      )}
-                                    </Link>
-                                    {/* <!-- Dropdown Menu Start --> */}
-                                    <div
-                                      className={`translate transform overflow-hidden ${
-                                        !open && "hidden"
-                                      }`}
-                                    >
-                                      <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                        <li>
-                                          <SidebarLinkGroup
-                                            activeCondition={
-                                              pathname === "/forms" ||
-                                              pathname.includes("forms")
-                                            }
-                                          >
-                                            {(handleClick, open) => {
-                                              return (
-                                                <React.Fragment>
-                                                  <Link
-                                                    href="#"
-                                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                                      (pathname === "/forms" ||
-                                                        pathname.includes(
-                                                          "forms"
-                                                        )) &&
-                                                      "bg-graydark dark:bg-meta-4"
-                                                    }`}
-                                                    onClick={(e) => {
-                                                      e.preventDefault();
-                                                      sidebarExpanded
-                                                        ? handleClick()
-                                                        : setSidebarExpanded(
-                                                            true
-                                                          );
-                                                    }}
-                                                  >
-                                                    <DynamicFormIcon />
-                                                    {sidebarOpen && (
-                                                      <>
-                                                        SNMP
-                                                        <svg
-                                                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                                                            open && "rotate-180"
-                                                          }`}
-                                                          width="20"
-                                                          height="20"
-                                                          viewBox="0 0 20 20"
-                                                          fill="none"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            fillRule="evenodd"
-                                                            clipRule="evenodd"
-                                                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                                            fill=""
-                                                          />
-                                                        </svg>
-                                                      </>
-                                                    )}
-                                                  </Link>
-                                                  {/* <!-- Dropdown Menu Start --> */}
-                                                  <div
-                                                    className={`translate transform overflow-hidden ${
-                                                      !open && "hidden"
-                                                    }`}
-                                                  >
-                                                    <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                                      <li>
-                                                        <Link
-                                                          href="#"
-                                                          className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                                            pathname === "#" &&
-                                                            "text-white"
-                                                          }`}
-                                                        >
-                                                          SNMP Catalogue
-                                                        </Link>
-                                                      </li>
-                                                      <li>
-                                                        <Link
-                                                          href="#"
-                                                          className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                                            pathname === "#" &&
-                                                            "text-white"
-                                                          }`}
-                                                        >
-                                                          SNMP Template
-                                                        </Link>
-                                                      </li>
-                                                    </ul>
-                                                  </div>
-                                                  {/* <!-- Dropdown Menu End --> */}
-                                                </React.Fragment>
-                                              );
-                                            }}
-                                          </SidebarLinkGroup>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    {/* <!-- Dropdown Menu End --> */}
-                                  </React.Fragment>
-                                );
-                              }}
-                            </SidebarLinkGroup>
-                          </li>
-
-                          <li>
-                            <Link
-                              href="#"
-                              className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "#" && "text-white"
-                              }`}
-                            >
-                              Flow Settings
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/forms/form-layout"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "/forms/form-layout" &&
-                                "text-white"
-                              }`}
-                            >
-                              Cluster Management
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Forms --> */}
             </ul>
           </div>
         </nav>

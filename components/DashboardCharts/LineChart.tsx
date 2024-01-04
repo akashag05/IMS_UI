@@ -7,8 +7,12 @@ import HighchartsAccessibility from "highcharts/modules/accessibility";
 import moment from "moment";
 import { useWebSocketContext } from "@/context/WebSocketContext";
 import { GetWidgetsData } from "@/app/api/DashboardWidgetsAPI";
+import useColorMode from "@/hooks/useColorMode";
+import { useAppContext } from "@/context/AppContext";
 
 const LineChartDashboardComponent = (props: any) => {
+  const { themeSwitch } = useAppContext();
+
   useEffect(() => {
     HighchartsExporting(Highcharts);
     HighchartsExportData(Highcharts);
@@ -123,17 +127,20 @@ const LineChartDashboardComponent = (props: any) => {
     // console.log("lines", lines);
     return lines;
   };
-
   useEffect(() => {
     if (chartContainer.current && data) {
-      // console.log(props.data);
-      // const newData: any = morphData(DummyData);
+      // console.log(themeSwitch);
       const newData: any = morphData(data);
+      const themeBackgroundColor = themeSwitch && "#1D2530";
+      const themetextColor = themeSwitch && "#ffffff";
       const options: any = {
         chart: {
           animation: false,
-          // height: 200, // Adjust the height of the chart based on the reports prop
           zoomType: "x",
+          backgroundColor: themeBackgroundColor,
+          style: {
+            borderRadius: "10px", // Set the border radius
+          },
         },
         title: {
           text: data.name || "",
@@ -141,6 +148,7 @@ const LineChartDashboardComponent = (props: any) => {
           style: {
             fontWeight: "bold",
             fontSize: "14px",
+            color: themetextColor,
           },
         },
         credits: {
@@ -156,13 +164,24 @@ const LineChartDashboardComponent = (props: any) => {
           title: {
             text: "",
           },
+          labels: {
+            style: {
+              color: themetextColor,
+            },
+          },
         },
 
         xAxis: {
           title: {
             text: "",
           },
+          labels: {
+            style: {
+              color: themetextColor,
+            },
+          },
           type: "category",
+          tickPixelInterval: 55,
         },
         legend: {
           enabled: true,
@@ -171,7 +190,9 @@ const LineChartDashboardComponent = (props: any) => {
           verticalAlign: "bottom",
           itemStyle: {
             fontSize: "10px", // Adjust font size of legends
+            color: themetextColor, // Set the text color to white
           },
+
           itemWidth: 150, // Set the width of each legend item
           itemDistance: 5,
         },
@@ -201,9 +222,7 @@ const LineChartDashboardComponent = (props: any) => {
     }
   }, [data, props.id]);
 
-  return (
-    <div className="p-2 bg-gm" id={props.keys} ref={chartContainer} />
-  );
+  return <div className="p-2 bg-gm" id={props.keys} ref={chartContainer} />;
 };
 
 export default LineChartDashboardComponent;

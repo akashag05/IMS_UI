@@ -21,6 +21,8 @@ const AppContext = createContext<{
   toggleGetRoleApiState: () => void;
   getWidgetApiState: boolean;
   toggleWidgetApiState: () => void;
+  themeSwitch: boolean;
+  toggleThemeSwitch: () => void;
 }>({
   sidebarOpen: false,
   toggleSideBarState: () => {},
@@ -42,6 +44,8 @@ const AppContext = createContext<{
   toggleGetRoleApiState: () => {},
   getWidgetApiState: false,
   toggleWidgetApiState: () => {},
+  themeSwitch: false,
+  toggleThemeSwitch: () => {},
 });
 
 export const AppContextProvider: React.FC<any> = ({ children }: any) => {
@@ -55,9 +59,13 @@ export const AppContextProvider: React.FC<any> = ({ children }: any) => {
   const [getSNMPTempApiState, setGetSNMPTempApiState] = useState(false);
   const [getRoleApiState, setRoleApiState] = useState(false);
   const [getWidgetApiState, setGetWidgetApiState] = useState(false);
+  const [themeSwitch, setThemeSwitch] = useState(false);
 
   const toggleSideBarState = () => {
     setSidebarOpen((prevState) => !prevState);
+  };
+  const toggleThemeSwitch = () => {
+    setThemeSwitch((prevState) => !prevState);
   };
   const toggleSideBarClickState = () => {
     setSidebarClick((prevState) => !prevState);
@@ -111,6 +119,8 @@ export const AppContextProvider: React.FC<any> = ({ children }: any) => {
         toggleGetRoleApiState,
         getWidgetApiState,
         toggleWidgetApiState,
+        themeSwitch,
+        toggleThemeSwitch,
       }}
     >
       {children}
