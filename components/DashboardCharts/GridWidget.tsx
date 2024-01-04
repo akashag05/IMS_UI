@@ -6,24 +6,42 @@ import {
   MRT_Row,
 } from "material-react-table";
 import { makeStyles } from "@mui/styles";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import { useAppContext } from "@/context/AppContext";
 import { useWebSocketContext } from "@/context/WebSocketContext";
 import { GetWidgetsData } from "@/app/api/DashboardWidgetsAPI";
-import { colors, createTheme, ThemeProvider, useTheme } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+
 const DashboardGridWidget = (props: any) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [data, setData] = useState<any>();
   const [columns, setColumns] = useState<any>();
   const [id, setId] = useState<any>("");
   const [title, setTitle] = useState<any>("");
-  const { getTableApiState, togglegetTableApiState, themeSwitch } =
-    useAppContext();
-  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
+  const { themeSwitch } = useAppContext();
+  const [rowSelection] = useState<MRT_RowSelectionState>({});
   const eventType = "ws.visualization";
   const { Subscribe, emit, unsubscribe, connection } = useWebSocketContext();
-  // console.log("props.keys", props);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
   function renderer(payload: any) {
     if (props.keys.endsWith(`${payload._id}`)) {
       // console.log("payload lambda - " + props.keys, payload);
@@ -89,7 +107,6 @@ const DashboardGridWidget = (props: any) => {
         });
       }
     });
-    // console.log("index", indexes);
     const lines: any[] = [];
     initialData.forEach((data: any, i: any) => {
       let modifiedData: any = {};
@@ -99,15 +116,12 @@ const DashboardGridWidget = (props: any) => {
       modifiedData.id = i + data.event.device + props.keys;
       lines.push(modifiedData);
     });
+    console.log("cols----", cols);
+    console.log("data----", lines);
     setColumns(cols);
     setData(lines);
     // return lines;
   }
-
-  // useEffect(() => {
-  //   let response = morphData(props.data);
-  //   setData(response);
-  // }, [props.data]);
 
   const handleDialogClose = () => {
     setDialogOpen(false); // Close the dialog
@@ -150,24 +164,71 @@ const DashboardGridWidget = (props: any) => {
       {data && (
         <div className="">
           <h6 className="my-2">{title}</h6>
+          <Paper
+            sx={{
+              width: "100%",
+              overflow: "hidden",
+              // backgroundColor: themeSwitch && "#1C2434",
+            }}
+          >
+            <TableContainer sx={{ maxHeight: 440 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column: any) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.headerName}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row: any) => {
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.code}
+                        >
+                          {columns.map((column: any) => {
+                            const value = row[column.id];
+                            console.log("value---", value);
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                {column.format && typeof value === "number"
+                                  ? column.format(value)
+                                  : value}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={data.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
           {/* <MaterialReactTable
             columns={columns}
             data={data}
             getRowId={(row: any) => row.id}
           /> */}
-          <DataGrid
-            rows={data}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            className={classes.paginationText}
-            style={{ color: themeSwitch ? "white" : "" }}
-            pageSizeOptions={[5, 10]}
-            // checkboxSelection
-          />
         </div>
       )}
       {/* <DeviceDetilsModal
