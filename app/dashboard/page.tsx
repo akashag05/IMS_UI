@@ -20,7 +20,7 @@ import { useAppContext } from "@/context/AppContext";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-const Dashboard = () => {
+export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [editable, setEditable] = useState(false);
   const [layouts, setLayouts] = useState<any>([]);
@@ -226,6 +226,4 @@ const Dashboard = () => {
       </div>
     </>
   );
-};
-
-export default Dashboard;
+}

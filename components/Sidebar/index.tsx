@@ -11,6 +11,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import DevicesIcon from "@mui/icons-material/Devices";
 import { useAppContext } from "@/context/AppContext";
 // interface SidebarProps {
 //   sidebarOpen: boolean;
@@ -118,9 +120,7 @@ const Sidebar = () => {
             <ul className="mb-6 flex flex-col gap-1.5">
               {/* <!-- Menu Item Dashboard --> */}
               <SidebarLinkGroup
-                activeCondition={
-                  pathname === "/" || pathname.includes("dashboard")
-                }
+                activeCondition={pathname.includes("dashboard")}
               >
                 {(handleClick, open) => {
                   return (
@@ -128,8 +128,7 @@ const Sidebar = () => {
                       <Link
                         href="/dashboard"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/" ||
-                            pathname.includes("dashboard")) &&
+                          pathname.includes("dashboard") &&
                           "bg-graydark dark:bg-meta-4"
                         }`}
                         onClick={(e) => {
@@ -214,6 +213,20 @@ const Sidebar = () => {
                 >
                   <DataSaverOffIcon />
                   {sidebarOpen && <>Flow Explorer</>}
+                </Link>
+              </li>
+              {/* <!-- Menu Item Profile --> */}
+
+              {/* <!-- Menu Item Profile --> */}
+              <li>
+                <Link
+                  href="/deviceManager"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-1 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("deviceManager") && "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <DevicesIcon />
+                  {sidebarOpen && <>Device Manager</>}
                 </Link>
               </li>
               {/* <!-- Menu Item Profile --> */}
@@ -322,7 +335,7 @@ const Sidebar = () => {
                     "bg-graydark dark:bg-meta-4"
                   }`}
                 >
-                  <SettingsIcon />
+                  <ManageAccountsIcon />
                   {sidebarOpen && <>Settings</>}
                 </Link>
               </li>
