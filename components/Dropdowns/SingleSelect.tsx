@@ -1,7 +1,7 @@
 import React from "react";
 
 const SingleSelect = (props: any) => {
-  const { label, selectData, onChange } = props;
+  const { label, selectData, onChange, require } = props;
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
 
@@ -9,9 +9,9 @@ const SingleSelect = (props: any) => {
   };
 
   return (
-    <div className="mx-1 mr-0">
-      <label className="mb-1 text-sm mt-2 block text-black dark:text-white">
-        {label}
+    <div className="ml-2 mr-0">
+      <label className="mb-1 text-sm mt-2 block font-semibold text-black dark:text-white">
+        {label} {require == true && <span className="text-danger">*</span>}
       </label>
       <div className="relative w-[12rem] z-20 bg-white dark:bg-form-input">
         <select

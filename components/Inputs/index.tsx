@@ -4,15 +4,15 @@ import React, { useState } from "react";
 const CustomeInput = (props: any) => {
   const { label, type, require, disable, value, name, onChange } = props;
   return (
-    <div className=" w-[180px] m-2 mb-0">
-      <label className=" mb-1 text-sm block text-black dark:text-white">
-        {label}
+    <div className="w-[180px] m-2 mx-3 mb-0">
+      <label className=" mb-1 text-sm block font-semibold text-black dark:text-white">
+        {label} {require == true && <span className="text-danger">*</span>}
       </label>
       <input
         type={type ? type : "text"}
         placeholder={label}
         className=" rounded-lg text-sm border-[2px] border-stroke bg-transparent py-1 px-2 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        required={require ? false : true}
+        required={require ? true : false}
         disabled={disable ? true : false}
         value={value ? value : ""}
         name={name ? name : ""}
@@ -38,7 +38,8 @@ export const CheckboxTwo = (props: any) => {
 
   return (
     <FormGroup>
-      <FormControlLabel className="text-sm"
+      <FormControlLabel
+        className="text-sm"
         control={
           <Checkbox
             required
@@ -93,9 +94,9 @@ export const CheckboxTwo = (props: any) => {
 export const CustomeTextArea = (props: any) => {
   const { label, require, disable, value, name, onChange, rows } = props;
   return (
-    <div className="m-2 mb-0">
-      <label className="mb-1 text-sm block text-black dark:text-white">
-        {label}
+    <div className="m-2  mx-3 mb-0">
+      <label className="mb-1 text-sm block font-semibold text-black dark:text-white">
+        {label} {require == true && <span className="text-danger">*</span>}
       </label>
       <textarea
         placeholder={label}

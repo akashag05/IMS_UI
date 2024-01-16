@@ -46,7 +46,7 @@ const DeviceManager = () => {
     <div className={` ${sidebarOpen ? "ml-72" : "ml-20"}`}>
       <ToastContainer />
       <PageHeading heading="Device Manager" />
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <div className="border rounded-lg m-2">
           <IconButton
             size="small"
@@ -94,7 +94,7 @@ const DeviceManager = () => {
             />
           </Menu>
         </div>
-      </div>
+      </div> */}
       <AllDeviceTable />
     </div>
   );

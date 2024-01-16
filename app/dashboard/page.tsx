@@ -104,7 +104,7 @@ export default function Dashboard() {
     <>
       <ToastContainer />
       <div className={` ${sidebarOpen ? "ml-72" : "ml-20"}`}>
-        <div className="text-xl border-b-2 border-slate-400 pb-2 px-4 mb-2 flex justify-between w-full items-end">
+        <div className="text-xl border-b border-slate-400 pb-2 px-4 mb-2 flex justify-between w-full items-end">
           <div>Dashboards</div>
           <div>
             {/* <button
@@ -163,10 +163,11 @@ export default function Dashboard() {
             {/* <div className="w-auto h-auto relative"> */}
             {layouts &&
               layouts?.map((data: any, index: any) => {
+                console.log("hjhsdjkfsd0---", data)
                 return (
                   <div
                     key={layouts[index]?.i}
-                    className="rounded p-2 h-auto border-2 border-sky-500  dark:bg-boxdark dark:drop-shadow-none shadow-lg relative"
+                    className="rounded p-2 h-auto border border-sky-500  dark:bg-boxdark dark:drop-shadow-none shadow-lg relative"
                     data-grid={{
                       w: data?.w,
                       h: data?.h,

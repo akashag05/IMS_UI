@@ -345,7 +345,7 @@ export const getAllDeviceManager = async () => {
   }
 };
 
-export const addDeviceCIDR = async (props: any) => {
+export const addDeviceManager = async (props: any) => {
   const token = localStorage.getItem("token");
   try {
     const res = await fetch(baseURL + "/api/v1/settings/device-manager", {

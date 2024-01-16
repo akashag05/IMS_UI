@@ -1,118 +1,98 @@
-// import React, { useState, useRef, useEffect } from "react";
-// import CloseIcon from "@mui/icons-material/Close";
+import * as React from "react";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import { Box, Chip } from "@mui/material";
+import { useAppContext } from "@/context/AppContext";
 
-// const MultiselectDropdown = () => {
-//   const [selectedItems, setSelectedItems] = useState<any>([]);
-//   const [isOpen, setIsOpen] = useState(false);
-//   const selectRef = useRef(null);
-
-//   const options: any = ["USA", "UK", "Canada"];
-
-//   const handleCheckboxChange = (option: any) => {
-//     if (selectedItems.includes(option)) {
-//       setSelectedItems(selectedItems.filter((item) => item !== option));
-//     } else {
-//       setSelectedItems([...selectedItems, option]);
-//     }
-//   };
-
-//   const handleRemoveItem = (item) => {
-//     setSelectedItems(
-//       selectedItems.filter((selectedItem) => selectedItem !== item)
-//     );
-//   };
-
-//   const handleToggleDropdown = () => {
-//     setIsOpen(!isOpen);
-//   };
-
-//   const handleClickOutside = (event) => {
-//     if (selectRef.current && !selectRef.current.contains(event.target)) {
-//       setIsOpen(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     document.addEventListener("mousedown", handleClickOutside);
-
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, []);
-
-//   return (
-//     <div className="mt-2">
-//       <div className="mb-1 block text-black dark:text-white">
-//         <label>Select Credential Profile</label>
-//       </div>
-//       <div
-//         ref={selectRef}
-//         className="relative z-20 w-full appearance-none rounded-lg border border-stroke bg-transparent py-1 px-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
-//       >
-//         <div
-//           className="flex items-center cursor-pointer"
-//           onClick={handleToggleDropdown}
-//         >
-//           <div className="w-full">
-//             {selectedItems.length > 0 ? (
-//               <div className="flex flex-wrap">
-//                 {selectedItems.map((item) => (
-//                   <div
-//                     key={item}
-//                     className="flex items-center border-2 rounded-lg m-1 px-1"
-//                   >
-//                     <span className="mr-2">{item}</span>
-//                     <CloseIcon
-//                       fontSize="12px"
-//                       //   icon={faTimes}
-//                       className="text-red-500 cursor-pointer"
-//                       onClick={() => handleRemoveItem(item)}
-//                     />
-//                   </div>
-//                 ))}
-//               </div>
-//             ) : (
-//               <span className="opacity-50">Select</span>
-//             )}
-//           </div>
-//         </div>
-//         {isOpen && (
-//           <div
-//             className="absolute top-full left-0 w-full rounded-lg border-2 dark:bg-form-input"
-//             style={{ backgroundColor: "white" }}
-//           >
-//             {options.map((option: any) => (
-//               <div
-//                 key={option}
-//                 className="flex items-center p-2 border-b-2 cursor-pointer"
-//               >
-//                 <input
-//                   type="checkbox"
-//                   id={option}
-//                   onChange={() => handleCheckboxChange(option)}
-//                   checked={selectedItems.includes(option)}
-//                 />
-//                 <label
-//                   htmlFor={option}
-//                   className="ml-2"
-//                   onClick={() => handleCheckboxChange(option)}
-//                 >
-//                   {option}
-//                 </label>
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MultiselectDropdown;
-import React from "react";
-
-const MultiSelect = () => {
-  return <div>MultiSelect</div>;
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 200,
+    },
+  },
 };
 
-export default MultiSelect;
+export default function MultiSelect(props: any) {
+  const { label, selectData, onChange, require } = props;
+  const [personName, setPersonName] = React.useState<string[]>([]);
+  const { themeSwitch } = useAppContext();
+
+  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  return (
+    <div className="w-[180px] m-2 mb-0">
+      <label className="mb-1 text-sm block font-semibold text-black dark:text-white">
+        {label} {require == true && <span className="text-danger">*</span>}
+      </label>
+      <FormControl sx={{ m: 1, width: 300, margin: 0 }}>
+        <Select
+          className=" h-[37px] z-20 text-sm w-[180px] appearance-none rounded-lg border-2 border-stroke bg-transparent py-1 pr-12 pl-4 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          placeholder={label}
+          value={personName}
+          onChange={handleChange}
+          renderValue={(selected) => (
+            <div className="flex flex-wrap">
+              {selected.length > 1 ? (
+                <p key={selected[0]} className="text-sm">
+                  {
+                    selectData.find((item: any) => item.id === selected[0])
+                      ?.name
+                  }
+                  ,{"    +" + (selected.length - 1) + ""}
+                </p>
+              ) : (
+                selected.map((value: any) => (
+                  <p key={value} className="text-sm">
+                    {selectData.find((item: any) => item.id === value)?.name},
+                  </p>
+                ))
+              )}
+            </div>
+          )}
+          MenuProps={MenuProps}
+        >
+          {selectData.map((item: any, index: any) => (
+            <MenuItem
+              key={index}
+              value={item.id ? item.id : item}
+              sx={{
+                margin: "0",
+                padding: "0",
+                backgroundColor: themeSwitch ? "#24303F" : "",
+                color: themeSwitch ? "#DEE4EE" : "",
+              }}
+            >
+              <Checkbox
+                sx={{ padding: "0 8px" }}
+                checked={personName.indexOf(item.id ? item.id : item) > -1}
+              />
+              <ListItemText
+                primary={item.name ? item.name : item}
+                className="text-sm"
+              />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
+}

@@ -9,11 +9,11 @@ import CustomeInput, {
   CheckboxTwo,
   CustomeTextArea,
 } from "@/components/Inputs";
-import MultiSelectDropdown from "@/components/Dropdowns/MultiSelect";
 import SingleSelect from "@/components/Dropdowns/SingleSelect";
 import countries from "country-list";
 import timezones from "timezones-list";
 import CustomeButton from "@/components/Buttons";
+import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 import { addSingleDevice } from "@/app/api/DeviceManagementAPI";
 import { getAllCredsProfile } from "@/app/api/CredentialProfileAPI";
@@ -21,6 +21,14 @@ import { getAllGropus } from "@/app/api/GroupsAPI";
 import { getAllDiscoverySch } from "@/app/api/DiscoveryScheduleAPI";
 import { replaceUnderscoresWithDots } from "@/functions/genericFunction";
 import { useAppContext } from "@/context/AppContext";
+import MultiSelect from "@/components/Dropdowns/MultiSelect";
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
   const initialState = {
     plugin_type: "SNMP",
@@ -31,7 +39,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
     credential_profiles: [],
     discovery_schedulers: [],
     groups: [],
-    device_name: "",
+    // device_name: "",
     description: "",
     alias: "",
     country: "",
@@ -44,8 +52,8 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
     timezone: "",
     device_status: "new",
     availability_interval: 60,
-    auto_provision: "yes",
-    check_without_save: "yes",
+    auto_provision: "discovery",
+    // check_without_save: "yes",
   };
 
   const { togglegetTableApiState } = useAppContext();
@@ -112,6 +120,13 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
     // setData({ ...data, port: proto == "10" ? "161" : "22" });
   };
 
+  const handleRadioChange = (event: any) => {
+    const { name, value } = event.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
   const handleAutoProvisionCheck = (event: any) => {
     setData({
       ...data,
@@ -189,13 +204,11 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
       fullWidth={fullWidth}
       maxWidth={maxWidth}
     >
-      <DialogTitle
-        style={{
-          backgroundColor: dialogBackgroundColor,
-          color: dialogTextColor,
-        }}
-      >
-        Add Single Device
+      <DialogTitle className="dark:bg-bodydark dark:text-white">
+        <div className="flex justify-between">
+          <p>Add Single Device</p>
+          <CloseIcon className="cursor-pointer" onClick={handleClose} />
+        </div>
       </DialogTitle>
       <DialogContent
         style={{
@@ -204,7 +217,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
           color: dialogTextColor,
         }}
       >
-        <form>
+        <form className=" rounded-lg m-2 p-2">
           <SingleSelect
             label="Protocol"
             selectData={["SNMP"]}
@@ -258,6 +271,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                     label="Select Credential Profile"
                     selectData={credsProfileValues}
                     onChange={handleCredProfile}
+                    require={true}
                   />
                   {errorKeys && errorKeys.includes("credential.profiles") && (
                     <p className="text-danger text-sm ml-2">
@@ -266,10 +280,11 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   )}
                 </div>
                 <div className="flex flex-col">
-                  <SingleSelect
+                  <MultiSelect
                     label="Select Group"
                     selectData={groupValues}
                     onChange={handleGroupDropdown}
+                    require={true}
                   />
                   {errorKeys && errorKeys.includes("groups") && (
                     <p className="text-danger text-sm ml-2">
@@ -278,13 +293,21 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   )}
                 </div>
                 {/* </div> */}
-                <CustomeInput
+                {/* <CustomeInput
                   label="Device Name"
                   name="device_name"
                   value={data.device_name}
                   onChange={handleInputChange}
                   type="text"
                   require={true}
+                /> */}
+                <CustomeInput
+                  label="Alias"
+                  name="alias"
+                  value={data.alias}
+                  onChange={handleInputChange}
+                  type="text"
+                  require={false}
                 />
                 <CustomeTextArea
                   label="Device Description"
@@ -292,14 +315,6 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   value={data.description}
                   onChange={handleInputChange}
                   rows="1"
-                  require={true}
-                />
-                <CustomeInput
-                  label="Alias"
-                  name="alias"
-                  value={data.alias}
-                  onChange={handleInputChange}
-                  type="text"
                   require={true}
                 />
                 <SingleSelect
@@ -313,7 +328,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   value={data.location}
                   onChange={handleInputChange}
                   type="text"
-                  require={true}
+                  require={false}
                 />
                 <CustomeInput
                   label="Site"
@@ -321,7 +336,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   value={data.site}
                   onChange={handleInputChange}
                   type="text"
-                  require={true}
+                  require={false}
                 />
                 <CustomeInput
                   label="Site Code"
@@ -329,7 +344,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   value={data.site_code}
                   onChange={handleInputChange}
                   type="text"
-                  require={true}
+                  require={false}
                 />
                 <CustomeInput
                   label="Service"
@@ -337,7 +352,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   value={data.service}
                   onChange={handleInputChange}
                   type="text"
-                  require={true}
+                  require={false}
                 />
                 <CustomeInput
                   label="Latitudes"
@@ -345,7 +360,7 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   value={data.latitude}
                   onChange={handleInputChange}
                   type="text"
-                  require={true}
+                  require={false}
                 />
                 <CustomeInput
                   label="Longitudes"
@@ -353,25 +368,48 @@ const AddSingleDeviceDialog = ({ open, handleClose, themeSwitch }: any) => {
                   value={data.longitude}
                   onChange={handleInputChange}
                   type="text"
-                  require={true}
+                  require={false}
                 />
                 <SingleSelect
                   label="Select TimeZone"
                   selectData={tzCodes}
                   onChange={handleTimeZoneDropdown}
                 />
-                <div className="flex ml-2 mt-6">
+                <FormControl style={{ margin: ".5rem" }}>
+                  {/* <FormLabel id="demo-controlled-radio-buttons-group">
+                    Gender
+                  </FormLabel> */}
+                  <RadioGroup
+                    style={{ display: "flex", flexDirection: "row" }}
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="auto_provision"
+                    value={data.auto_provision}
+                    onChange={handleRadioChange}
+                  >
+                    <FormControlLabel
+                      value="monitoring"
+                      control={<Radio size="small" />}
+                      label="Auto Provision"
+                    />
+                    <FormControlLabel
+                      value="discovery"
+                      control={<Radio size="small" />}
+                      label="Discovery Only"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                {/* <div className="flex ml-2 mt-6">
                   <CheckboxTwo
                     label="Auto Provision"
                     checked={data.auto_provision}
                     onChange={handleAutoProvisionCheck}
                   />
                   <CheckboxTwo
-                    label="Check Without Save"
+                    label="Discover Only"
                     checked={data.check_without_save}
                     onChange={handleCheckWithoudSaveCheck}
                   />
-                </div>
+                </div> */}
               </div>
             </>
           )}

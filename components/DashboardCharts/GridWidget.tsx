@@ -98,7 +98,7 @@ const DashboardGridWidget = (props: any) => {
     cols.push({
       field: "device",
       headerName: "Device",
-      minWidth: 150,
+      minWidth: 170,
     });
     if (groupBy != "device") {
       initialData.forEach((item: any) => {
@@ -109,7 +109,7 @@ const DashboardGridWidget = (props: any) => {
       cols.push({
         field: groupBy,
         headerName: groupBy,
-        minWidth: 150,
+        minWidth: 170,
       });
     }
     const firstData = initialData[0]?.event || 0;
@@ -119,7 +119,7 @@ const DashboardGridWidget = (props: any) => {
         cols.push({
           field: keys.replace(/\./g, "_"),
           headerName: keys.replace(/\./g, " "),
-          minWidth: 150,
+          minWidth: 170,
         });
       }
     });
@@ -264,7 +264,7 @@ const DashboardGridWidget = (props: any) => {
                 color: themeSwitch ? "white" : "",
               }}
             >
-              <div className="border-b-2 border-[#CCCFD9] flex justify-end w-fit m-2 px-2">
+              <div className="border-b border-[#CCCFD9] flex justify-end w-fit m-2 px-2">
                 <InputBase
                   style={{ color: themeSwitch ? "white" : "" }}
                   placeholder=""
@@ -345,6 +345,7 @@ const DashboardGridWidget = (props: any) => {
                               key={column.id}
                               align={column.align}
                               style={{
+                                padding : "8px",
                                 minWidth: column.minWidth,
                                 color: themeSwitch ? "#24303F" : "",
                                 backgroundColor: themeSwitch ? "#CCCFD9" : "",
@@ -401,6 +402,7 @@ const DashboardGridWidget = (props: any) => {
                                       : "",
                                     fontSize: "11px",
                                     fontWeight: "normal",
+                                    padding: "8px"
                                   }}
                                 >
                                   {column.format && typeof value === "number"
