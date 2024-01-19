@@ -295,12 +295,18 @@ const DashboardGridWidget = (props: any) => {
                       <MenuItem
                         style={{
                           backgroundColor: themeSwitch ? "#24303F" : "",
-                          color: themeSwitch ? "#DEE4EE" : "",
+                        color: themeSwitch ? "#DEE4EE" : "",
+                        fontFamily: `"Poppins", sans-serif`,
+                        padding: "0px .5rem",
                         }}
                         key={column.field}
                         onClick={() => handleMenuItemClick(column.field)}
                       >
                         <Checkbox
+                        style={{
+                          padding: "0 .5rem",
+                          color: themeSwitch ? "#DEE4EE" : "",
+                        }}
                           checked={visibleColumns.includes(column.field)}
                           onChange={() => handleMenuItemClick(column.field)}
                         />

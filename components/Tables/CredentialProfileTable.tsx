@@ -520,7 +520,7 @@ const CredntialProfileTable = () => {
 
               {/* Add Device Menu and Model */}
 
-              <div className="border rounded-lg m-4 h-fit">
+              <div className="m-4 ml-2 h-fit">
                 <AddIcon
                   onClick={handleAddSingleOpenDialog}
                   fontSize="medium"

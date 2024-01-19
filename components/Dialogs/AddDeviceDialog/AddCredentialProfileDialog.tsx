@@ -239,10 +239,10 @@ export const AddCredentialProfile = ({
         // maxWidth={maxWidth}
       >
         <DialogTitle
-          className="dark:bg-bodydark dark:text-white"
+          className="dark:bg-bodydark dark:text-white border-b"
           sx={{ padding: "0px 10px" }}
         >
-          <div className="flex justify-between">
+          <div className="m-2 flex justify-between">
             <p>Add Credential Profile</p>
             <CloseIcon className="cursor-pointer" onClick={handleClose} />
           </div>

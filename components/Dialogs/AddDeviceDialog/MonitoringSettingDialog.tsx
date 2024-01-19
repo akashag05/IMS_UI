@@ -107,7 +107,7 @@ const MonitoringSettingDialog = ({ open, handleClose, id }: any) => {
       maxWidth={maxWidth}
     >
       <DialogTitle
-        className="dark:bg-bodydark dark:text-white"
+        className="dark:bg-bodydark dark:text-white border-b"
         sx={{ padding: "0px 10px" }}
       >
         <div className="m-2 flex justify-between">
