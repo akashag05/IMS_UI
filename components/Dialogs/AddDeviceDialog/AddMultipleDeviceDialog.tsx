@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useAppContext } from "@/context/AppContext";
 import AddDeviceCIRD from "./MultipleDeviceForms/AddDeviceCIDR";
 import AddDeviceIPRange from "./MultipleDeviceForms/AddDeviceIPRange";
+import AddDeviceCSV from "./MultipleDeviceForms/AddDeviceCSV";
 const AddMultipleDeviceDialog = ({ open, handleClose }: any) => {
   const { themeSwitch } = useAppContext();
   const [value, setValue] = React.useState("1");
@@ -27,9 +28,17 @@ const AddMultipleDeviceDialog = ({ open, handleClose }: any) => {
     setValue(newValue);
   };
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth={maxWidth}>
-      <DialogTitle className="dark:bg-bodydark dark:text-white">
-        <div className=" m-2  flex justify-between">
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullWidth={true}
+      maxWidth={maxWidth}
+    >
+      <DialogTitle
+        className="dark:bg-bodydark dark:text-white"
+        sx={{ padding: "0px 10px" }}
+      >
+        <div className="m-2 flex justify-between">
           <p>Add Multiple Device</p>
           <CloseIcon className="cursor-pointer" onClick={handleClose} />
         </div>
@@ -69,7 +78,7 @@ const AddMultipleDeviceDialog = ({ open, handleClose }: any) => {
               <AddDeviceIPRange handleClose={handleClose} />
             </TabPanel>
             <TabPanel value="3" sx={{ padding: "0" }}>
-              CSV
+              <AddDeviceCSV handleClose={handleClose} />
             </TabPanel>
           </TabContext>
         </Box>

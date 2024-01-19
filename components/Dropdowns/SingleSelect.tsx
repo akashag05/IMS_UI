@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const SingleSelect = (props: any) => {
-  const { label, selectData, onChange, require } = props;
+  const { label, selectData, onChange, require, value } = props;
+
+  // useEffect(() => {
+  //   if(value) {
+
+  //   }
+  // },[value])
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
 
@@ -17,7 +23,8 @@ const SingleSelect = (props: any) => {
         <select
           className="relative z-20 text-sm w-[180px] appearance-none rounded-lg border-2 border-stroke bg-transparent py-1 pr-12 pl-4 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
           onChange={handleSelectChange}
-          // multiple={true}
+          value={value && value}
+          multiple={false}
         >
           {selectData &&
             selectData.map((item: any, index: any) => {

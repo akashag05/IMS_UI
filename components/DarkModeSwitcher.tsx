@@ -6,7 +6,7 @@ const DarkModeSwitcher = () => {
   const [colorMode, setColorMode] = useColorMode();
   const { themeSwitch, toggleThemeSwitch } = useAppContext();
   useEffect(() => {}, [colorMode]);
-  console.log("theme", colorMode);
+  // console.log("theme", colorMode);
   return (
     <li>
       <label

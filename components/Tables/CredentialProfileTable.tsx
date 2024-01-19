@@ -25,22 +25,20 @@ import AddIcon from "@mui/icons-material/Add";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 import { toast } from "react-toastify";
 import { useAppContext } from "@/context/AppContext";
-import {
-  deleteSingleDevice,
-  getAllDevice,
-} from "@/app/api/DeviceManagementAPI";
-import {
-  convertEpochToDateMonthYear,
-  replacePeriodsWithUnderscores,
-} from "@/functions/genericFunction";
+import { getAllDevice } from "@/app/api/DeviceManagementAPI";
+import { replacePeriodsWithUnderscores } from "@/functions/genericFunction";
 import AddSingleDeviceDialog from "../Dialogs/AddDeviceDialog/AddSingleDevice";
 import AddMultipleDeviceDialog from "../Dialogs/AddDeviceDialog/AddMultipleDeviceDialog";
-import { getAllCredsProfile } from "@/app/api/CredentialProfileAPI";
+import {
+  deleteCredsProfile,
+  getAllCredsProfile,
+} from "@/app/api/CredentialProfileAPI";
 import { getAllGropus } from "@/app/api/GroupsAPI";
 import { getAllDiscoverySch } from "@/app/api/DiscoveryScheduleAPI";
-import AllDeviceMenu from "../ActionMenu/AllDeviceMenu";
+import CredentialProfileMenu from "../ActionMenu/CredentialProfileMenu";
+import { AddCredentialProfile } from "../Dialogs/AddDeviceDialog/AddCredentialProfileDialog";
 
-const AllDeviceTable = () => {
+const CredntialProfileTable = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [data, setData] = useState<any>();
   const [columns, setColumns] = useState<any>();
@@ -53,7 +51,7 @@ const AllDeviceTable = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRows, setSelectedRows] = useState<any>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [allCredsPrfile, setAllCredsProfil] = React.useState([]);
+  const [allDevices, setAllDevices] = React.useState([]);
   const [allGroups, setAllGroups] = React.useState([]);
   const [selected, setSelected] = useState(false);
   const [anchorE3, setAnchorE3] = useState(null);
@@ -61,7 +59,7 @@ const AllDeviceTable = () => {
   const [isAddSingleDialogOpen, setIsAddSingleDialogOpen] = useState(false);
   const [isAddMultipleDialogOpen, setIsAddMultipleDialogOpen] = useState(false);
   const open = Boolean(anchorE2);
-  const { themeSwitch, getTableApiState, togglegetTableApiState } =
+  const { themeSwitch, getCredProfileApiState, togglegetCredProfileApiState } =
     useAppContext();
   const ITEM_HEIGHT = 48;
   const groupValues =
@@ -70,10 +68,16 @@ const AllDeviceTable = () => {
       name: item.name,
       id: item._id,
     }));
+  const deviceValues =
+    allDevices &&
+    allDevices.map((item: any) => ({
+      name: item.hostname,
+      id: item._id,
+    }));
   React.useEffect(() => {
     const getCredsProfile = async () => {
-      let response = await getAllCredsProfile();
-      setAllCredsProfil(response.result);
+      let response = await getAllDevice();
+      setAllDevices(response.result);
     };
     getCredsProfile();
     const getGroups = async () => {
@@ -91,40 +95,29 @@ const AllDeviceTable = () => {
     try {
       const getData = async () => {
         let cols: any = [];
-        let response = await getAllDevice();
+        let response = await getAllCredsProfile();
         const modifiedData = replacePeriodsWithUnderscores(response.result);
         // console.log("modifidData", modifiedData);
         const col = Object.keys(modifiedData[0]);
         const filteredCols = col.filter((key: any) => !key.startsWith("_"));
-        console.log(filteredCols);
+        console.log("filtered cols", filteredCols);
         filteredCols.filter((key: any) => {
           if (!key.startsWith("_")) {
-            if (key == "availability_context") {
-              cols.unshift({
-                field: "icmp_availability",
-                headerName: "icmp_Avl.",
-                minWidth: 80,
-              });
-              cols.unshift({
-                field: "plugin_availability",
-                headerName: "plugin_Avl.",
+            if (key == "credential_context") {
+              cols.push({
+                field: "snmp_community",
+                headerName: "SNMP Comm.",
                 minWidth: 80,
               });
               cols.push({
-                field: "timestamp",
-                headerName: "timestamp",
-                minWidth: 120,
-              });
-            } else if (key == "port") {
-              cols.push({
-                field: key.replace(/\./g, "_"),
-                headerName: key.replace(/\./g, " "),
+                field: "snmp_version",
+                headerName: "SNMP Version",
                 minWidth: 80,
               });
-            } else if (key == "credential_profiles") {
+            } else if (key == "device_ids") {
               cols.push({
-                field: key.replace(/\./g, "_"),
-                headerName: key.replace(/\./g, " "),
+                field: "device_ids",
+                headerName: "Devices",
                 minWidth: 150,
               });
             } else {
@@ -136,50 +129,17 @@ const AllDeviceTable = () => {
             }
           }
         });
-        const x = filteredCols.includes("availabilty_context");
-        if (x) {
-          cols.unshift({
-            field: "icmp_availability",
-            headerName: "icmp_Avl.",
-            minWidth: 80,
-          });
-          cols.unshift({
-            field: "plugin_availability",
-            headerName: "plugin_Avl.",
-            minWidth: 80,
-          });
-          cols.push({
-            field: "timestamp",
-            headerName: "timestamp",
-            minWidth: 120,
-          });
-        }
+
         console.log("cols", cols);
         setColumns(cols);
         console.log("rows", modifiedData);
         const hiddenColumnsValues = [
-          "alias",
-          "discovery_schedulers",
-          "country",
-          "groups",
-          "profile_type",
-          "port",
-          "credential_profiles",
-          "availability_interval",
-          "flow_enabled",
-          "auto_provision",
-          "location",
-          "site",
-          "site_code",
-          "device_name",
-          "service",
-          "latitude",
-          "longitude",
+          "snmp_community",
+          "snmp_version",
           "created_by",
           "created_on",
           "updated_by",
           "updated_on",
-          "timezone",
         ];
 
         setVisibleColumns(
@@ -194,7 +154,7 @@ const AllDeviceTable = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [getTableApiState]);
+  }, [getCredProfileApiState]);
 
   const handleRequestSort = (property: any) => {
     const isAsc = orderBy === property && order === "asc";
@@ -247,11 +207,10 @@ const AllDeviceTable = () => {
   const deleteDevice = async () => {
     console.log("delete array", selectedRows);
     try {
-      let response = await deleteSingleDevice(selectedRows);
-      // console.log(response);
-      // window.alert(response.status);
+      let response = await deleteCredsProfile(selectedRows);
+
       if (response.status == "success") {
-        togglegetTableApiState();
+        togglegetCredProfileApiState();
         toast.success(response.message, {
           position: "bottom-right",
           autoClose: 1000,
@@ -374,105 +333,33 @@ const AllDeviceTable = () => {
 
       // If a matching group is found, return its name, otherwise return null or a default value
       return matchingGroup ? matchingGroup.name : row[column.field];
-    } else if (column.field === "credential_profiles") {
-      const credProfileId = row[column.field];
-      const numericCredProfileId = parseInt(credProfileId[0], 10);
+    } else if (column.field === "device_ids") {
+      const deviceIds = row[column.field];
 
-      const matchingCredsProfile: any = allCredsPrfile.find(
-        (creds: any) => creds._id === numericCredProfileId
-      );
-      // console.log("----", matchingCredsProfile);
-      // If a matching group is found, return its name, otherwise return null or a default value
-      return matchingCredsProfile
-        ? matchingCredsProfile.name
-        : row[column.field];
-      // : row[column.field];
-    } else if (column.field === "icmp_availability") {
-      if (
-        row.availability_context &&
-        row.availability_context["icmp.availability"]
-      ) {
-        return (
-          <>
-            <Tooltip title="OnLine" placement="top-end">
-              <div className="bg-success rounded-xl w-3 h-3 "></div>
-            </Tooltip>
-            {/* <ArrowUpwardIcon color="success" fontSize="small" /> */}
-          </>
-        );
-      } else if (
-        row.availability_context &&
-        !row.availability_context["icmp.availability"]
-      ) {
-        return (
-          <>
-            <Tooltip title="Offline" placement="top-end">
-              <div className="bg-danger rounded-xl w-3 h-3"></div>
-            </Tooltip>
+      const numericDeviceIds = deviceIds.map((id: any) => parseInt(id, 10));
 
-            {/* <ArrowDownwardIcon color="error" fontSize="small" /> */}
-          </>
+      const matchingDevices = numericDeviceIds.map((numericId: number) => {
+        const matchingDevice = deviceValues.find(
+          (device: any) => device.id === numericId
         );
-      }
-    } else if (column.field === "plugin_availability") {
-      if (
-        row.availability_context &&
-        row.availability_context["plugin.availability"]
-      ) {
-        return (
-          <>
-            <Tooltip title="OnLine" placement="top-end">
-              <div className="bg-success rounded-xl w-3 h-3"></div>
-            </Tooltip>
-            {/* <ArrowUpwardIcon color="success" fontSize="small" /> */}
-          </>
-        );
-      } else if (
-        row.availability_context &&
-        !row.availability_context["plugin.availability"]
-      ) {
-        return (
-          <>
-            <Tooltip title="OffLine" placement="top-end">
-              <div className="bg-danger rounded-xl w-3 h-3"></div>
-            </Tooltip>
-            {/* <ArrowDownwardIcon color="error" fontSize="small" /> */}
-          </>
-        );
-      }
-    } else if (column.field === "flow_enabled") {
-      if (row[column.field] == "yes") {
-        return (
-          <>
-            <Tooltip title="OnLine" placement="top-end">
-              <div className="bg-success rounded-xl w-3 h-3 "></div>
-            </Tooltip>
-            {/* <ArrowUpwardIcon color="success" fontSize="small" /> */}
-          </>
-        );
-      } else if (row[column.field] == "no") {
-        return (
-          <>
-            <Tooltip title="Offline" placement="top-end">
-              <div className="bg-danger rounded-xl w-3 h-3"></div>
-            </Tooltip>
+        return matchingDevice ? matchingDevice.name : "-";
+      });
 
-            {/* <ArrowDownwardIcon color="error" fontSize="small" /> */}
-          </>
-        );
-      }
-    } else if (column.field === "timestamp") {
-      const timestamp =
-        row.availability_context && row.availability_context["timestamp"];
+      const namesInCommaSeparatedFormat = matchingDevices.join(", ");
 
-      if (row.availability_context && row.availability_context["timestamp"]) {
-        const formattedDateMonthYear = convertEpochToDateMonthYear(timestamp);
-        return formattedDateMonthYear;
-      }
+      return namesInCommaSeparatedFormat ? namesInCommaSeparatedFormat : "-";
+    } else if (column.field === "snmp_community") {
+      return row.credential_context["snmp.community"] == ""
+        ? "-"
+        : row.credential_context["snmp.community"];
+    } else if (column.field === "snmp_version") {
+      return row.credential_context["snmp.version"] == ""
+        ? "-"
+        : row.credential_context["snmp.version"];
     }
 
     // If no specific processing needed, return the original value
-    return row[column.field];
+    return row[column.field] == "" ? "-" : row[column.field];
   };
 
   const handleAddMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -540,24 +427,21 @@ const AllDeviceTable = () => {
               <div className="m-4 mr-0">
                 {selected ? (
                   <>
-                    <Tooltip title="Delete Selected Devices" arrow>
-                      <DeleteForeverIcon
-                        onClick={deleteDevice}
-                        className="cursor-pointer"
-                        style={{
-                          margin: "0 5px",
-                        }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Download CSV" arrow>
-                      <FileDownloadIcon
-                        onClick={downloadCSV}
-                        className="cursor-pointer"
-                        style={{
-                          margin: "0 5px",
-                        }}
-                      />
-                    </Tooltip>
+                    <DeleteForeverIcon
+                      onClick={deleteDevice}
+                      className="cursor-pointer"
+                      style={{
+                        margin: "0 5px",
+                      }}
+                    />
+
+                    <FileDownloadIcon
+                      onClick={downloadCSV}
+                      className="cursor-pointer"
+                      style={{
+                        margin: "0 5px",
+                      }}
+                    />
                   </>
                 ) : (
                   <>
@@ -579,12 +463,10 @@ const AllDeviceTable = () => {
                   </>
                 )}
                 {/* Hide and Show column */}
-                <Tooltip title="View & Hide Column" arrow>
-                  <ViewColumnIcon
-                    style={{ margin: "0 0 0 5px" }}
-                    onClick={handleMenuOpen}
-                  />
-                </Tooltip>
+                <ViewColumnIcon
+                  style={{ margin: "0 0 0 5px" }}
+                  onClick={handleMenuOpen}
+                />
                 <Menu
                   anchorEl={anchorEl}
                   open={isMenuOpen}
@@ -638,58 +520,28 @@ const AllDeviceTable = () => {
 
               {/* Add Device Menu and Model */}
 
-              <div className="m-4 ml-2 h-fit">
-                <Tooltip title="Add Device" arrow>
-                  <IconButton
-                    size="small"
-                    aria-label="more"
-                    id="long-button"
-                    aria-controls={open ? "long-menu" : undefined}
-                    aria-expanded={open ? "true" : undefined}
-                    aria-haspopup="true"
-                    onClick={handleAddMenuClick}
-                    style={{ padding: "0" }}
-                  >
-                    <AddIcon
-                      fontSize="medium"
-                      sx={{ color: themeSwitch ? "#DEE4EE" : "" }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  id="long-menu"
-                  MenuListProps={{
-                    "aria-labelledby": "long-button",
+              <div className="border rounded-lg m-4 h-fit">
+                <AddIcon
+                  onClick={handleAddSingleOpenDialog}
+                  fontSize="medium"
+                  sx={{
+                    color: themeSwitch ? "#DEE4EE" : "",
+                    cursor: "pointer",
                   }}
-                  anchorEl={anchorE2}
-                  open={open}
-                  onClose={handleAddMenuClose}
-                  PaperProps={{
-                    style: {
-                      maxHeight: ITEM_HEIGHT * 4.5,
-                      width: "19ch",
-                      backgroundColor: themeSwitch ? "#24303F" : "",
-                      color: themeSwitch ? "#DEE4EE" : "",
-                    },
-                  }}
-                >
-                  <MenuItem onClick={handleAddSingleOpenDialog}>
-                    Add Single Device
-                  </MenuItem>
-                  <AddSingleDeviceDialog
-                    themeSwitch={themeSwitch}
-                    open={isAddSingleDialogOpen}
-                    handleClose={handleAddSingleCloseDialog}
-                  />
-                  <MenuItem onClick={handleAddMultipleOpenDialog}>
+                />
+                <AddCredentialProfile
+                  themeSwitch={themeSwitch}
+                  open={isAddSingleDialogOpen}
+                  handleClose={handleAddSingleCloseDialog}
+                />
+                {/* <MenuItem onClick={handleAddMultipleOpenDialog}>
                     Add Multiple Device
                   </MenuItem>
                   <AddMultipleDeviceDialog
                     themeSwitch={themeSwitch}
                     open={isAddMultipleDialogOpen}
                     handleClose={handleAddMultipleCloseDialog}
-                  />
-                </Menu>
+                  /> */}
               </div>
             </div>
           </div>
@@ -722,15 +574,13 @@ const AllDeviceTable = () => {
                         color: themeSwitch ? "#24303F" : "",
                         backgroundColor: themeSwitch ? "#CCCFD9" : "#F7F9FC",
                         fontSize: "11px",
+                        textAlign: "center",
                         fontWeight: "bolder",
                       }}
                     >
                       <Checkbox
                         size="small"
-                        style={{
-                          padding: "0",
-                          color: themeSwitch ? "#24303F" : "",
-                        }}
+                        style={{ padding: "0" }}
                         checked={selectAll}
                         onChange={handleSelectAllCheckboxToggle}
                       />
@@ -754,10 +604,13 @@ const AllDeviceTable = () => {
                                 : "#F7F9FC",
                               fontSize: "11px",
                               fontWeight: "bolder",
+                              textAlign: "center",
+
                               fontFamily: `"Poppins", sans-serif`,
                             }}
                           >
                             <TableSortLabel
+                              style={{ marginLeft: "2rem" }}
                               active={orderBy === column.field}
                               direction={
                                 iconDirection as "asc" | "desc" | undefined
@@ -787,6 +640,7 @@ const AllDeviceTable = () => {
                         color: themeSwitch ? "#24303F" : "",
                         backgroundColor: themeSwitch ? "#CCCFD9" : "#F7F9FC",
                         fontSize: "11px",
+                        textAlign: "center",
                         fontWeight: "bolder",
                         fontFamily: `"Poppins", sans-serif`,
                       }}
@@ -806,10 +660,13 @@ const AllDeviceTable = () => {
                         tabIndex={-1}
                         key={row._id}
                       >
-                        <TableCell style={{ padding: "8px" }}>
+                        <TableCell
+                          style={{ padding: "8px", textAlign: "center" }}
+                        >
                           <Checkbox
                             style={{
                               padding: "0",
+                              textAlign: "center",
                               color: themeSwitch ? "#DEE4EE" : "",
                             }}
                             color="primary"
@@ -838,6 +695,7 @@ const AllDeviceTable = () => {
                                   fontSize: "11px",
                                   fontWeight: "normal",
                                   padding: "8px",
+                                  textAlign: "center",
                                   fontFamily: `"Poppins", sans-serif`,
                                 }}
                               >
@@ -855,10 +713,11 @@ const AllDeviceTable = () => {
                             fontSize: "11px",
                             fontWeight: "normal",
                             padding: "0",
+                            textAlign: "center",
                             fontFamily: `"Poppins", sans-serif`,
                           }}
                         >
-                          <AllDeviceMenu rowData={row} />
+                          <CredentialProfileMenu rowData={row} />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -885,4 +744,4 @@ const AllDeviceTable = () => {
   );
 };
 
-export default AllDeviceTable;
+export default CredntialProfileTable;

@@ -32,7 +32,7 @@ export function replaceUnderscoresWithDots(obj: any) {
 
     for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const newKey = key.replace(/_/g, ".");
+        const newKey = key.startsWith("_") ? key : key.replace(/_/g, ".");
         newObj[newKey] = replaceUnderscoresWithDots(obj[key]);
       }
     }
@@ -41,4 +41,32 @@ export function replaceUnderscoresWithDots(obj: any) {
   } else {
     return obj;
   }
+}
+export function replacePeriodsWithUnderscoresArrayOfObjects(arr: any[]) {
+  const result: any[] = [];
+  // console.log("-----array",arr)
+  for (const obj of arr) {
+    const newObj: any = {};
+
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const newKey = key.replace(/\./g, "_"); // Replace all periods with underscores
+        newObj[newKey] = obj[key];
+      }
+    }
+
+    result.push(newObj);
+  }
+  // console.log("result---------",result)
+  return result;
+}
+
+export function convertEpochToDateMonthYear(epochTimeInSeconds: any) {
+  const epochTimeInMilliseconds = epochTimeInSeconds * 1000;
+  const date = new Date(epochTimeInMilliseconds);
+
+  const options: any = { year: "numeric", month: "numeric", day: "numeric" };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+
+  return formattedDate;
 }

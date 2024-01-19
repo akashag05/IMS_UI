@@ -171,11 +171,12 @@ export const bulkActionDeviceDelete = async (props: any) => {
 };
 
 export const updateSingleDevice = async (props: any) => {
+  console.log(props);
   const token = localStorage.getItem("token");
   try {
     const res = await fetch(baseURL + `/api/v1/settings/device/${props.id}`, {
       method: "PUT",
-      body: JSON.stringify(props.bodyData),
+      body: JSON.stringify(props.bodydata),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

@@ -155,6 +155,7 @@ const LineChartDashboardComponent = (props: any) => {
         chart: {
           animation: false,
           zoomType: "x",
+          // styledMode: true,
           // backgroundColor: themeBackgroundColor,
           style: {
             borderRadius: "10px", // Set the border radius
@@ -244,7 +245,7 @@ const LineChartDashboardComponent = (props: any) => {
     <>
       <div
         id="container"
-        className={` ${themeSwitch ? "highcharts-light" : "highcharts-dark"}`}
+        className={` ${themeSwitch ? "highcharts-dark" : "highcharts-light"}`}
       ></div>
       <div
         className="p-2"

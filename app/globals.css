@@ -1,4 +1,5 @@
 /* @import url("https://fonts.cdnfonts.com/css/satoshi"); */
+@import "https://code.highcharts.com/dashboards/css/dashboards.css";
 /* @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"); */
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
 @tailwind base;
@@ -223,3 +224,56 @@ span.flatpickr-weekday,
     padding-right: 2px;
   }
 }
+
+
+
+
+@import 'https://code.highcharts.com/css/highcharts.css';
+ 
+:root { /* light mode */
+	--background-color: #ffffff;
+	--text-color: #292b2c;
+	--hilight-color: #0275d8;
+}
+ 
+@media (prefers-color-scheme: dark) { 
+    :root {
+        --background-color: #1F2227;
+        --text-color: #c0c0c0;
+        --hilight-color: #8db4d6;
+    }
+    /* Some data colors. Light mode uses defaults */
+    .highcharts-color-0 {
+        fill: #0460ba;
+        stroke: #0460ba;
+    }
+    .highcharts-color-1 {
+        fill: #9696ab;
+        stroke: #9696ab;
+    }
+}
+ 
+/* body { */
+    /* background-color: var(--background-color); */
+/* } */
+/* .highcharts-background {
+    fill: var(--background-color);
+}
+.highcharts-container text {
+    fill: white;
+}
+.highcharts-subtitle,
+.highcharts-credits,
+.highcharts-axis-title {
+
+}
+.highcharts-grid-line {
+    stroke: var(--text-color);
+    stroke-opacity: 0.2;
+}
+.highcharts-tooltip-box {
+    fill: var(--background-color);
+}
+.highcharts-column-series rect.highcharts-point {
+    stroke: var(--background-color);
+} */
