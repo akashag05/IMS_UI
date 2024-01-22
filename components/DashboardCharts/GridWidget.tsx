@@ -247,8 +247,9 @@ const DashboardGridWidget = (props: any) => {
         <div className="">
           <div className="flex justify-between">
             <h6
+              className="dark:text-[#DEE4EE]"
               style={{
-                color: themeSwitch ? "#DEE4EE" : "",
+                // color: themeSwitch ? "#DEE4EE" : "",
                 fontSize: "21px",
                 fontWeight: "bolder",
               }}
@@ -256,23 +257,28 @@ const DashboardGridWidget = (props: any) => {
               {title}
             </h6>
             <div
+              className="dark:bg-[#24303F] dark:text-white"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 // padding: "4px",
-                backgroundColor: themeSwitch ? "#24303F" : "",
-                color: themeSwitch ? "white" : "",
+                // backgroundColor: themeSwitch ? "#24303F" : "",
+                // color: themeSwitch ? "white" : "",
               }}
             >
               <div className="border-b border-[#CCCFD9] flex justify-end w-fit m-2 px-2">
                 <InputBase
-                  style={{ color: themeSwitch ? "white" : "" }}
+                  className="dark:text-white"
+                  // style={{ color: themeSwitch ? "white" : "" }}
                   placeholder=""
                   value={search}
                   onChange={handleSearchChange}
                 />
                 <IconButton>
-                  <SearchIcon style={{ color: themeSwitch ? "white" : "" }} />
+                  <SearchIcon
+                    className="dark:text-white"
+                    // style={{ color: themeSwitch ? "white" : "" }}
+                  />
                 </IconButton>
               </div>
               <div className="m-4">
@@ -293,20 +299,23 @@ const DashboardGridWidget = (props: any) => {
                   {columns &&
                     columns.map((column: any) => (
                       <MenuItem
+                        className="dark:bg-[#24303F] dark:text-[#DFE4EE] dark:hover:text-black"
                         style={{
-                          backgroundColor: themeSwitch ? "#24303F" : "",
-                        color: themeSwitch ? "#DEE4EE" : "",
-                        fontFamily: `"Poppins", sans-serif`,
-                        padding: "0px .5rem",
+                          // backgroundColor: themeSwitch ? "#24303F" : "",
+                          // color: themeSwitch ? "#DEE4EE" : "",
+                          fontFamily: `"Poppins", sans-serif`,
+                          padding: "0px .5rem",
                         }}
                         key={column.field}
                         onClick={() => handleMenuItemClick(column.field)}
                       >
                         <Checkbox
-                        style={{
-                          padding: "0 .5rem",
-                          color: themeSwitch ? "#DEE4EE" : "",
-                        }}
+                          size="small"
+                          className="dark:text[#DEE4EE]"
+                          style={{
+                            padding: "0 .5rem",
+                            // color: themeSwitch ? "#DEE4EE" : "",
+                          }}
                           checked={visibleColumns.includes(column.field)}
                           onChange={() => handleMenuItemClick(column.field)}
                         />
@@ -325,8 +334,9 @@ const DashboardGridWidget = (props: any) => {
             }}
           >
             <TableContainer
+              className="dark:bg-[#24303F]"
               sx={{
-                backgroundColor: themeSwitch ? "#24303F" : "",
+                // backgroundColor: themeSwitch ? "#24303F" : "",
                 maxHeight: 440,
                 // border: "2px solid grey",
                 // borderRadius: ".5rem",
@@ -348,13 +358,14 @@ const DashboardGridWidget = (props: any) => {
                           const iconDirection = column.field ? order : "asc";
                           return (
                             <TableCell
+                              className="dark:text-[#24303F] dark:bg-[#CCCDF9]"
                               key={column.id}
                               align={column.align}
                               style={{
-                                padding : "8px",
+                                padding: "8px",
                                 minWidth: column.minWidth,
-                                color: themeSwitch ? "#24303F" : "",
-                                backgroundColor: themeSwitch ? "#CCCFD9" : "",
+                                // color: themeSwitch ? "#24303F" : "",
+                                // backgroundColor: themeSwitch ? "#CCCFD9" : "",
                                 fontSize: "11px",
                                 fontWeight: "bolder",
                               }}
@@ -399,16 +410,17 @@ const DashboardGridWidget = (props: any) => {
                               const value = row[column.field];
                               return (
                                 <TableCell
+                                  className="dark:text-[#DEE4EE] dark:bg[#1A222C]"
                                   key={column.id}
                                   align={column.align}
                                   style={{
-                                    color: themeSwitch ? "#DEE4EE" : "",
-                                    backgroundColor: themeSwitch
-                                      ? "#1A222C"
-                                      : "",
+                                    // color: themeSwitch ? "#DEE4EE" : "",
+                                    // backgroundColor: themeSwitch
+                                    //   ? "#1A222C"
+                                    //   : "",
                                     fontSize: "11px",
                                     fontWeight: "normal",
-                                    padding: "8px"
+                                    padding: "8px",
                                   }}
                                 >
                                   {column.format && typeof value === "number"
@@ -423,10 +435,11 @@ const DashboardGridWidget = (props: any) => {
               </Table>
             </TableContainer>
             <TablePagination
-              style={{
-                color: themeSwitch ? "white" : "",
-                backgroundColor: themeSwitch ? "#1A222C" : "",
-              }}
+              className="dark:text-white dark:bg-[#1A222C]"
+              // style={{
+              //   color: themeSwitch ? "white" : "",
+              //   backgroundColor: themeSwitch ? "#1A222C" : "",
+              // }}
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={data.length}
